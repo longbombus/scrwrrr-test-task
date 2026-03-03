@@ -33,6 +33,8 @@ if(XCODE)
     if(NOT DEFINED CMAKE_XCODE_ATTRIBUTE_IPHONEOS_DEPLOYMENT_TARGET)
         SET (CMAKE_XCODE_ATTRIBUTE_IPHONEOS_DEPLOYMENT_TARGET 8.0)
     endif()
+
+    set(CMAKE_OSX_ARCHITECTURES x86_64 CACHE STRING "Build architectures for Xcode" FORCE)
 endif()
 
 if(NOT DEFINED BUILD_ENGINE_DONE) # to test scorewarrior-test into root project
@@ -54,15 +56,9 @@ if(APPLE OR WINDOWS)
     cocos_mark_multi_resources(common_res_files RES_TO "Resources" FOLDERS ${GAME_RES_FOLDER})
 endif()
 
-# add cross-platforms source files and header files 
-list(APPEND GAME_SOURCE
-     Classes/AppDelegate.cpp
-     Classes/HelloWorldScene.cpp
-     )
-list(APPEND GAME_HEADER
-     Classes/AppDelegate.h
-     Classes/HelloWorldScene.h
-     )
+# add cross-platforms source files and header files
+file(GLOB GAME_SOURCE "Classes/*.cpp")
+file(GLOB GAME_HEADER "Classes/*.h")
 
 if(ANDROID)
     # change APP_NAME to the share library name for Android, it's value depend on AndroidManifest.xml
