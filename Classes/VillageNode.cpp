@@ -1,6 +1,7 @@
 #include <cmath>
 
 #include "VillageNode.h"
+#include "CameraLayer.h"
 
 USING_NS_CC;
 
@@ -61,6 +62,7 @@ void VillageNode::spawnHouse(Vec3 const & position, float scale, float yaw)
     if (!house)
         return;
     
+    house->setCameraMask(CameraLayer::World);
     house->setPosition3D(Vec3(position.x, 0, position.z));
     house->setRotation3D(Vec3(0, CC_RADIANS_TO_DEGREES(yaw), 0));
     house->setScale(scale);

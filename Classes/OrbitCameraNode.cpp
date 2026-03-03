@@ -1,5 +1,7 @@
 #include "OrbitCameraNode.h"
 
+#include "CameraLayer.h"
+
 USING_NS_CC;
 
 static float constexpr k_cameraFov = 60;
@@ -22,6 +24,7 @@ bool OrbitCameraNode::init()
     Vec2 && screenSize = Director::getInstance()->getVisibleSize();
     float const aspectRatio = screenSize.x / screenSize.y;
     _camera = Camera::createPerspective(k_cameraFov, aspectRatio, k_cameraNearPlane, k_cameraFarPlane);
+    _camera->setCameraFlag(CameraLayer::WorldFlag);
     this->addChild(_camera);
     return true;
 }

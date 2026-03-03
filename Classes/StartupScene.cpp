@@ -1,5 +1,6 @@
 #include "StartupScene.h"
 
+#include "CameraLayer.h"
 #include "VillageNode.h"
 
 USING_NS_CC;
@@ -53,11 +54,12 @@ void StartupScene::initUI()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
     
-    auto hintLabel = Label::createWithTTF(
+    auto * const hintLabel = Label::createWithTTF(
         "Move mouse = rotate\nMouse wheel = zoom",
         "fonts/Marker Felt.ttf",
         16
     );
+    hintLabel->setCameraMask(CameraLayer::UI);
     
     if (hintLabel)
     {
