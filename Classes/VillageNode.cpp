@@ -25,7 +25,7 @@ void VillageNode::spawnQuarter(Vec3 const & position, float houseOffset, float h
         houseOffset * streetSize
     );
     
-    Vec3 startPosition = position - streatSize * (sideStreetsCount * 0.5f);
+    Vec3 startPosition = position - streatSize * ((sideStreetsCount - 1) * 0.5f);
     
     for (size_t z = 0; z < sideStreetsCount; ++z)
     {
