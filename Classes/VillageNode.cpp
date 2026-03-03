@@ -1,5 +1,6 @@
 #include <cmath>
 
+#include "EmissiveMaterial.h"
 #include "VillageNode.h"
 #include "CameraLayer.h"
 
@@ -66,6 +67,8 @@ void VillageNode::spawnHouse(Vec3 const & position, float scale, float yaw)
     house->setPosition3D(Vec3(position.x, 0, position.z));
     house->setRotation3D(Vec3(0, CC_RADIANS_TO_DEGREES(yaw), 0));
     house->setScale(scale);
+
+    house->setMaterial(EmissiveMaterial::getInstance());
     
     this->addChild(house);
 }
