@@ -1,0 +1,69 @@
+#include <cmath>
+
+#include "VillageNode.h"
+
+USING_NS_CC;
+
+
+bool VillageNode::init()
+{
+    return Node::init();
+}
+
+void VillageNode::regenerateQuater(Vec3 const & position, float houseOffset, float houseScale, size_t sideStreetsCount, size_t streetSize)
+{
+    this->removeAllChildren();
+    
+    spawnQuarter(position, houseOffset, houseScale, sideStreetsCount, streetSize);
+}
+
+void VillageNode::spawnQuarter(Vec3 const & position, float houseOffset, float houseScale, size_t sideStreetsCount, size_t streetSize)
+{
+    Vec3 streatSize = Vec3(
+        houseOffset * streetSize,
+        0,
+        houseOffset * streetSize
+    );
+    
+    Vec3 startPosition = position - streatSize * (sideStreetsCount * 0.5f);
+    
+    for (size_t z = 0; z < sideStreetsCount; ++z)
+    {
+        for (size_t x = 0; x < sideStreetsCount; ++x)
+        {
+            float streetYaw;
+            switch (RandomHelper::random_int(0, 3))
+            {
+                case 0: streetYaw = M_PI_4; break;
+                case 1: streetYaw = -M_PI_4; break;
+                case 2: streetYaw = M_PI_4 * 3; break;
+                case 3: streetYaw = -M_PI_4 * 3; break;
+            }
+            spawnStreet(startPosition + Vec3(streatSize.x * x, 0, streatSize.z * z), houseOffset, houseScale, streetYaw, streetSize);
+        }
+    }
+}
+
+void VillageNode::spawnStreet(Vec3 const & position, float houseOffset, float houseScale, float yaw, size_t size)
+{
+    Vec3 const direction = Vec3(std::sinf(yaw), 0, std::cosf(yaw));
+    Vec3 const startPosition = position - direction * (houseOffset * (size - 1) * 0.5f);
+    
+    for (size_t i = 0; i < size; ++i)
+    {
+        spawnHouse(startPosition + direction * (houseOffset * i), houseScale, yaw);
+    }
+}
+
+void VillageNode::spawnHouse(Vec3 const & position, float scale, float yaw)
+{
+    auto * house = Sprite3D::create("house/house_mesh.c3b");
+    if (!house)
+        return;
+    
+    house->setPosition3D(Vec3(position.x, 0, position.z));
+    house->setRotation3D(Vec3(0, CC_RADIANS_TO_DEGREES(yaw), 0));
+    house->setScale(scale);
+    
+    this->addChild(house);
+}
