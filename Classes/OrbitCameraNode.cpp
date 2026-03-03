@@ -19,7 +19,9 @@ bool OrbitCameraNode::init()
     
     _distance = 100;
     
-    _camera = Camera::createPerspective(k_cameraFov, 1, k_cameraNearPlane, k_cameraFarPlane);
+    Vec2 && screenSize = Director::getInstance()->getVisibleSize();
+    float const aspectRatio = screenSize.x / screenSize.y;
+    _camera = Camera::createPerspective(k_cameraFov, aspectRatio, k_cameraNearPlane, k_cameraFarPlane);
     this->addChild(_camera);
     return true;
 }
