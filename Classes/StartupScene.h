@@ -22,6 +22,7 @@ private:
     void initInput();
     
     void updateVillage();
+    void updateDayTime();
     
     void updateKeyboardKeyPress(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
     void updateMouseButton(cocos2d::EventMouse * event);
@@ -31,6 +32,7 @@ private:
 private:
     int _streetSize;
     int _streetsCount;
+    int _dayHour;
     cocos2d::Vec2 _lastMousePosition;
     OrbitCameraNode * _cameraNode;
     VillageNode * _villageNode;

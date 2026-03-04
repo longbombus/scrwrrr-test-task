@@ -7,6 +7,8 @@ USING_NS_CC;
 static std::string const k_materialName = "emissive";
 static std::string const k_emissiveTextureUniformName = "u_emissive";
 static std::string const k_lightDirectionUniformName = "u_lightDirection";
+static std::string const k_nightColorUniformName = "u_nightColor";
+static std::string const k_dayNightFactorUniformName = "u_dayNightFactor";
 
 std::string const & EmissiveMaterial::getName()
 {
@@ -46,4 +48,33 @@ void EmissiveMaterial::setLightDirection(Vec3 const & direction)
     }
     
     state->setUniform(location, &direction, sizeof(direction));
+}
+
+
+void EmissiveMaterial::setNightColor(cocos2d::Color4F const & nightColor)
+{
+    backend::ProgramState * state;
+    backend::UniformLocation location;
+    
+    if (!tryGetUniformInfo(k_nightColorUniformName, state, location))
+    {
+        cocos2d::log("EmissiveMaterial: %s uniform is not found in shader %s", k_nightColorUniformName.c_str(), k_materialName.c_str());
+        return;
+    }
+    
+    state->setUniform(location, &nightColor, sizeof(nightColor));
+}
+
+void EmissiveMaterial::setDayNightFactor(float dayNightFactor)
+{
+    backend::ProgramState * state;
+    backend::UniformLocation location;
+    
+    if (!tryGetUniformInfo(k_dayNightFactorUniformName, state, location))
+    {
+        cocos2d::log("EmissiveMaterial: %s uniform is not found in shader %s", k_dayNightFactorUniformName.c_str(), k_materialName.c_str());
+        return;
+    }
+    
+    state->setUniform(location, &dayNightFactor, sizeof(dayNightFactor));
 }

@@ -16,6 +16,7 @@ static int const k_initialStreetsCount = 5;
 StartupScene::StartupScene() noexcept
     : _streetsCount(k_initialStreetsCount)
     , _streetSize(k_initialStreetSize)
+    , _dayHour(12)
 {
 }
 
@@ -47,6 +48,7 @@ void StartupScene::initWorld()
     this->addChild(_villageNode);
     
     updateVillage();
+    updateDayTime();
 }
 
 void StartupScene::initUI()
@@ -92,6 +94,12 @@ void StartupScene::updateVillage()
     _villageNode->regenerateQuater(Vec3::ZERO, 5, 0.001f, _streetsCount, _streetSize);
 }
 
+void StartupScene::updateDayTime()
+{
+    auto * const material = _villageNode->getHouseMaterial();
+    material->setDayNightFactor(std::abs(_dayHour - 12) / 12.f);
+}
+
 void StartupScene::updateKeyboardKeyPress(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event * event)
 {
     switch (keyCode)
@@ -114,6 +122,16 @@ void StartupScene::updateKeyboardKeyPress(cocos2d::EventKeyboard::KeyCode keyCod
         case EventKeyboard::KeyCode::KEY_EQUAL:
             _streetsCount = std::min(_streetsCount + 1, k_maxStreetsCount);
             updateVillage();
+            break;
+            
+        case EventKeyboard::KeyCode::KEY_COMMA:
+            _dayHour = (_dayHour + 23) % 24;
+            updateDayTime();
+            break;
+            
+        case EventKeyboard::KeyCode::KEY_PERIOD:
+            _dayHour = (_dayHour + 1) % 24;
+            updateDayTime();
             break;
             
         default:

@@ -12,6 +12,8 @@ public:
     
     void regenerateQuater(cocos2d::Vec3 const & position, float houseOffset, float houseScale, size_t sideStreetsCount, size_t streetSize);
     
+    EmissiveMaterial * getHouseMaterial() const { return _houseMaterial; }
+    
 private:
     void spawnQuarter(cocos2d::Vec3 const & position, float houseOffset, float houseScale, size_t sideStreetsCount, size_t streetSize);
     void spawnStreet(cocos2d::Vec3 const & position, float houseOffset, float houseScale, float yaw, size_t size);

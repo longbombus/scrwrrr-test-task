@@ -12,4 +12,6 @@ public:
     void setEmissiveTexture(cocos2d::Texture2D const * texture);
     
     void setLightDirection(cocos2d::Vec3 const & direction);
+    void setNightColor(cocos2d::Color4F const & nightColor);
+    void setDayNightFactor(float dayNightFactor);
 };

@@ -19,6 +19,7 @@ bool VillageNode::init()
     _houseMaterial = EmissiveMaterial::getInstance("house");
     _houseMaterial->setEmissiveTexture(k_houseEmissiveTexturePath);
     _houseMaterial->setLightDirection(Vec3(1,1,1));
+    _houseMaterial->setNightColor(Color4F(.1f, .0f, .2f, 1));
     
     return true;
 }
