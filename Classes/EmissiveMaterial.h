@@ -8,6 +8,8 @@ class EmissiveMaterial : public SharedMaterial<EmissiveMaterial>, public CustomM
 public:
     static std::string const & getName();
     
-    void SetEmissiveTexture(std::string const & imagePath);
-    void SetEmissiveTexture(cocos2d::Texture2D const * texture);
+    void setEmissiveTexture(std::string const & imagePath);
+    void setEmissiveTexture(cocos2d::Texture2D const * texture);
+    
+    void setLightDirection(cocos2d::Vec3 const & direction);
 };

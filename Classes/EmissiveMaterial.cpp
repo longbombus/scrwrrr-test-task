@@ -4,26 +4,46 @@
 
 USING_NS_CC;
 
-static std::string const materialName = "emissive";
+static std::string const k_materialName = "emissive";
+static std::string const k_emissiveTextureUniformName = "u_emissive";
+static std::string const k_lightDirectionUniformName = "u_lightDirection";
 
 std::string const & EmissiveMaterial::getName()
 {
-    return materialName;
+    return k_materialName;
 }
 
-void EmissiveMaterial::SetEmissiveTexture(std::string const & imagePath)
+void EmissiveMaterial::setEmissiveTexture(std::string const & imagePath)
 {
     auto texture = Director::getInstance()->getTextureCache()->addImage(imagePath);
     if (texture)
-        SetEmissiveTexture(texture);
+        setEmissiveTexture(texture);
 }
 
-void EmissiveMaterial::SetEmissiveTexture(Texture2D const * texture)
+void EmissiveMaterial::setEmissiveTexture(Texture2D const * texture)
 {
-    auto * const technique = this->getTechnique();
-    auto * const pass = technique->getPassByIndex(0);
-    auto * const programState = pass->getProgramState();
-    auto const && emissiveLocation = programState->getUniformLocation("u_emissive");
+    backend::ProgramState * state;
+    backend::UniformLocation location;
     
-    programState->setTexture(emissiveLocation, 0, texture->getBackendTexture());
+    if (!tryGetUniformInfo(k_emissiveTextureUniformName, state, location))
+    {
+        cocos2d::log("EmissiveMaterial: %s uniform is not found in shader %s", k_emissiveTextureUniformName.c_str(), k_materialName.c_str());
+        return;
+    }
+    
+    state->setTexture(location, 0, texture->getBackendTexture());
+}
+
+void EmissiveMaterial::setLightDirection(Vec3 const & direction)
+{
+    backend::ProgramState * state;
+    backend::UniformLocation location;
+    
+    if (!tryGetUniformInfo(k_lightDirectionUniformName, state, location))
+    {
+        cocos2d::log("EmissiveMaterial: %s uniform is not found in shader %s", k_lightDirectionUniformName.c_str(), k_materialName.c_str());
+        return;
+    }
+    
+    state->setUniform(location, &direction, sizeof(direction));
 }

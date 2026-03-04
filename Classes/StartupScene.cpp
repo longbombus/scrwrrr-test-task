@@ -131,7 +131,7 @@ void StartupScene::updateMouseMove(EventMouse * event)
     if (event->getMouseButton() == EventMouse::MouseButton::BUTTON_UNSET)
         return;
     
-    Vec2 && currentMousePosition = event->getLocation();
+    Vec2 const currentMousePosition = event->getLocation();
     Vec2 const delta = currentMousePosition - _lastMousePosition;
     _lastMousePosition = currentMousePosition;
     

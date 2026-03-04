@@ -9,7 +9,7 @@ class SharedMaterial
 public:
     static TMaterial * getInstance(std::string const & name)
     {
-        auto && instanceIt = _instances.find(name);
+        auto const instanceIt = _instances.find(name);
         if (instanceIt != _instances.end())
             return instanceIt->second;
         

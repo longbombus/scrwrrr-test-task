@@ -21,7 +21,7 @@ bool OrbitCameraNode::init()
     
     _distance = 100;
     
-    Vec2 && screenSize = Director::getInstance()->getVisibleSize();
+    Vec2 const screenSize = Director::getInstance()->getVisibleSize();
     float const aspectRatio = screenSize.x / screenSize.y;
     _camera = Camera::createPerspective(k_cameraFov, aspectRatio, k_cameraNearPlane, k_cameraFarPlane);
     _camera->setCameraFlag(CameraLayer::WorldFlag);
