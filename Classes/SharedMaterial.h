@@ -1,24 +1,37 @@
 #pragma once
 
+#include <type_traits>
 #include "cocos2d.h"
 
 template <typename TMaterial>
 class SharedMaterial
 {
 public:
-    static TMaterial * getInstance()
+    static TMaterial * getInstance(std::string const & name)
     {
-        if (_instance)
-            return _instance;
+        auto && instanceIt = _instances.find(name);
+        if (instanceIt != _instances.end())
+            return instanceIt->second;
         
-        _instance = static_cast<TMaterial *>(TMaterial::createWithShaderName(TMaterial::getName()));
-        _instance->retain();
-        return _instance;
+        auto * const instance = static_cast<TMaterial *>(TMaterial::createWithShaderName(TMaterial::getName()));
+        instance->retain();
+        _instances.insert({name, instance});
+        return instance;
+    }
+    
+    static typename std::unordered_map<std::string, TMaterial *>::iterator instancesBegin()
+    {
+        return _instances.begin();
+    }
+    
+    static typename std::unordered_map<std::string, TMaterial *>::iterator instancesEnd()
+    {
+        return _instances.end();
     }
     
 private:
-    static TMaterial * _instance;
+    static std::unordered_map<std::string, TMaterial *> _instances;
 };
 
 template <typename TMaterial>
-TMaterial * SharedMaterial<TMaterial>::_instance = nullptr;
+std::unordered_map<std::string, TMaterial *> SharedMaterial<TMaterial>::_instances;

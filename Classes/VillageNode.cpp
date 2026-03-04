@@ -6,10 +6,20 @@
 
 USING_NS_CC;
 
+static std::string const k_houseModelPath = "house/house_mesh.c3b";
+static std::string const k_houseTexturePath = "house/base_color.png";
+static std::string const k_houseEmissiveTexturePath = "house/emission.png";
+
 
 bool VillageNode::init()
 {
-    return Node::init();
+    if (!Node::init())
+        return false;
+
+    _houseMaterial = EmissiveMaterial::getInstance("house");
+    _houseMaterial->SetEmissiveTexture(k_houseEmissiveTexturePath);
+    
+    return true;
 }
 
 void VillageNode::regenerateQuater(Vec3 const & position, float houseOffset, float houseScale, size_t sideStreetsCount, size_t streetSize)
@@ -59,7 +69,7 @@ void VillageNode::spawnStreet(Vec3 const & position, float houseOffset, float ho
 
 void VillageNode::spawnHouse(Vec3 const & position, float scale, float yaw)
 {
-    auto * house = Sprite3D::create("house/house_mesh.c3b");
+    auto * house = Sprite3D::create(k_houseModelPath);
     if (!house)
         return;
     
@@ -67,8 +77,8 @@ void VillageNode::spawnHouse(Vec3 const & position, float scale, float yaw)
     house->setPosition3D(Vec3(position.x, 0, position.z));
     house->setRotation3D(Vec3(0, CC_RADIANS_TO_DEGREES(yaw), 0));
     house->setScale(scale);
-
-    house->setMaterial(EmissiveMaterial::getInstance());
+    
+    house->setMaterial(_houseMaterial);
     
     this->addChild(house);
 }
