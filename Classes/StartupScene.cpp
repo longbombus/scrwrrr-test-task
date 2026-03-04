@@ -107,7 +107,7 @@ void StartupScene::updateHint()
         return;
     
     _hintLabel->setString(StringUtils::format(
-        "Use mouse to rotate and zoom\nStreets %dx%d (use keys: - =)\nHouses %d (use keys: [ ])\nTime %02d:00 (use keys: < >)",
+        "Use mouse to rotate and zoom\nStreets %dx%d (use keys: - =)\nHouses per street %d (use keys: [ ])\nTime %02d:00 (use keys: < >)",
         _streetsCount, _streetsCount,
         _streetSize,
         _dayHour
