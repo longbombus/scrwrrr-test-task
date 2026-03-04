@@ -23,6 +23,7 @@ private:
     
     void updateVillage();
     void updateDayTime();
+    void updateHint();
     
     void updateKeyboardKeyPress(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
     void updateMouseButton(cocos2d::EventMouse * event);
@@ -36,4 +37,5 @@ private:
     cocos2d::Vec2 _lastMousePosition;
     OrbitCameraNode * _cameraNode;
     VillageNode * _villageNode;
+    cocos2d::Label * _hintLabel;
 };

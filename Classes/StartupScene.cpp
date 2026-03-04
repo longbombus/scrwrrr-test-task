@@ -34,6 +34,10 @@ bool StartupScene::init()
     initUI();
     initInput();
     
+    updateVillage();
+    updateDayTime();
+    updateHint();
+    
     return true;
 }
 
@@ -46,9 +50,6 @@ void StartupScene::initWorld()
     
     _villageNode = VillageNode::create();
     this->addChild(_villageNode);
-    
-    updateVillage();
-    updateDayTime();
 }
 
 void StartupScene::initUI()
@@ -56,21 +57,21 @@ void StartupScene::initUI()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
     
-    auto * const hintLabel = Label::createWithTTF(
-        "Move mouse = rotate\nMouse wheel = zoom",
-        "fonts/Marker Felt.ttf",
-        16
+    _hintLabel = Label::createWithTTF(
+        std::string(),
+        "fonts/arial.ttf",
+        12
     );
-    hintLabel->setCameraMask(CameraLayer::UI);
-    
-    if (hintLabel)
+    if (_hintLabel)
     {
-        hintLabel->setPosition(Vec2(
+        _hintLabel->setCameraMask(CameraLayer::UI);
+        _hintLabel->setPosition(Vec2(
             origin.x + visibleSize.width * .5f,
-            origin.y + visibleSize.height - hintLabel->getContentSize().height
+            origin.y + visibleSize.height
         ));
+        _hintLabel->setAnchorPoint(Vec2(0.5f, 1.f));
 
-        this->addChild(hintLabel, 1);
+        this->addChild(_hintLabel, 1);
     }
     else
         cocos2d::log("Hint label was not created");
@@ -98,6 +99,19 @@ void StartupScene::updateDayTime()
 {
     auto * const material = _villageNode->getHouseMaterial();
     material->setDayNightFactor(std::abs(_dayHour - 12) / 12.f);
+}
+
+void StartupScene::updateHint()
+{
+    if (!_hintLabel)
+        return;
+    
+    _hintLabel->setString(StringUtils::format(
+        "Use mouse to rotate and zoom\nStreets %dx%d (use keys: - =)\nHouses %d (use keys: [ ])\nTime %02d:00 (use keys: < >)",
+        _streetsCount, _streetsCount,
+        _streetSize,
+        _dayHour
+    ));
 }
 
 void StartupScene::updateKeyboardKeyPress(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event * event)
@@ -135,8 +149,10 @@ void StartupScene::updateKeyboardKeyPress(cocos2d::EventKeyboard::KeyCode keyCod
             break;
             
         default:
-            break;
+            return;
     }
+    
+    updateHint();
 }
 
 void StartupScene::updateMouseButton(cocos2d::EventMouse * event)
