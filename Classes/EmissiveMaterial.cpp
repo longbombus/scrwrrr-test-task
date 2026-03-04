@@ -1,5 +1,3 @@
-#pragma once
-
 #include "EmissiveMaterial.h"
 
 USING_NS_CC;
